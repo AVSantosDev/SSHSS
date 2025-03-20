@@ -7,24 +7,28 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 @Service
 public class SshssServices {
 
-    @Autowired
-    private ConsultaRepository consultaRepository;
 
     @Autowired
-    private ExameRepository exameRepository;
+    public ConsultaRepository consultaRepository;
 
     @Autowired
-    private PacienteRepository pacienteRepository;
+    public ExameRepository exameRepository;
 
     @Autowired
-    private PrescricaoRepository prescricaoRepository;
+    public PacienteRepository pacienteRepository;
 
     @Autowired
-    private ProfissionalDeSaudeRepository profissionalDeSaudeRepository;
+    public PrescricaoRepository prescricaoRepository;
+
+    @Autowired
+    public ProfissionalDeSaudeRepository profissionalDeSaudeRepository;
+
+
 
     public Consulta salvarConsulta(Consulta consulta) {
         return consultaRepository.save(consulta);

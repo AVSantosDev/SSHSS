@@ -14,6 +14,61 @@ public class ProfissionalDeSaude {
     private String especialidade;
     private String crmCoren;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEspecialidade() {
+        return especialidade;
+    }
+
+    public void setEspecialidade(String especialidade) {
+        this.especialidade = especialidade;
+    }
+
+    public String getCrmCoren() {
+        return crmCoren;
+    }
+
+    public void setCrmCoren(String crmCoren) {
+        this.crmCoren = crmCoren;
+    }
+
+    public List<Consulta> getConsultas() {
+        return consultas;
+    }
+
+    public void setConsultas(List<Consulta> consultas) {
+        this.consultas = consultas;
+    }
+
+    public List<Prescricao> getPrescricoes() {
+        return prescricoes;
+    }
+
+    public void setPrescricoes(List<Prescricao> prescricoes) {
+        this.prescricoes = prescricoes;
+    }
+
+    public List<Exame> getExames() {
+        return exames;
+    }
+
+    public void setExames(List<Exame> exames) {
+        this.exames = exames;
+    }
 
     @OneToMany(mappedBy = "profissional")
     private List<Consulta> consultas;
