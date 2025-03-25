@@ -19,8 +19,7 @@ public class SshssServices {
     @Autowired
     public ExameRepository exameRepository;
 
-    @Autowired
-    public PacienteRepository pacienteRepository;
+
 
     @Autowired
     public PrescricaoRepository prescricaoRepository;
@@ -40,10 +39,10 @@ public class SshssServices {
 
     }
 
-    public Optional<Paciente> buscaPaciente(long id){
-        return pacienteRepository.findById(id);
-
-    }
+//    public Optional<Paciente> buscaPaciente(long id){
+//        return pacienteRepository.findById(id);
+//
+//    }
 
     public Exame salvarExame(Exame exame) {
         return exameRepository.save(exame);

@@ -3,14 +3,15 @@ package com.SSHSS.Model;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 public class AtualizacaoProntuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
 
-    private Long id;
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "profissional_id")

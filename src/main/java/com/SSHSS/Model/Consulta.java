@@ -2,20 +2,24 @@ package com.SSHSS.Model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
+@Table(name="consulta")
 public class Consulta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(generator ="uuid2")
+    //@GenericGenerator(name="uuid2", strategy = "uuid2")
+    @Column(name = "idConsulta")
     private Long id;
-
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataHora;
-
-    private String Status;
+    private String status;
     private boolean tpConsulta;
 
     public Long getId() {
@@ -35,11 +39,11 @@ public class Consulta {
     }
 
     public String getStatus() {
-        return Status;
+        return status;
     }
 
     public void setStatus(String status) {
-        Status = status;
+        status = status;
     }
 
     public boolean isTpConsulta() {
@@ -66,8 +70,12 @@ public class Consulta {
         this.profissional = profissional;
     }
 
+
+
+
     @ManyToOne
-    @JoinColumn(name = "paciente_id")
+    @JoinColumn(name = "id_Paciente")
+    @NotNull
     private Paciente paciente;
 
     @ManyToOne

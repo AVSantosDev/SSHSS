@@ -1,16 +1,24 @@
 package com.SSHSS.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
+@Table(name= "paciente")
 public class Paciente   {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(generator = "uuid2")
+    //@GenericGenerator(name = "uuid2", strategy = "uuid2")
+    //private UUID id;
+    @Column(name="idPaciente")
     private Long id;
-    private String nome;
+    private String name;
     private String cpf;
     private String telefone;
     private String email;
@@ -21,6 +29,7 @@ public class Paciente   {
     private Prontuario prontuario;
 
     @OneToMany(mappedBy = "paciente")
+    @JsonIgnore
     private List<Consulta> consultas;
 
     @OneToMany(mappedBy = "paciente")
@@ -37,12 +46,12 @@ public class Paciente   {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCpf() {
@@ -103,9 +112,5 @@ public class Paciente   {
 
     public void getDados(){
 
-
-
-
-     return;
     }
 }

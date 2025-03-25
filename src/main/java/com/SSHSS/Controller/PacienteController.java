@@ -1,64 +1,77 @@
 package com.SSHSS.Controller;
 
 import com.SSHSS.Model.Paciente;
-import com.SSHSS.Service.SshssServices;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.SSHSS.Service.PacienteService;
+import com.SSHSS.dtos.PacienteRecord;
+import jakarta.validation.Valid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/paciente")
+@RequestMapping("/SSHSS")
 public class PacienteController {
 
-    @Autowired
-    private SshssServices sshssServices;
 
-    @GetMapping
-    public ResponseEntity<List<Paciente>> listarPaciente() {
-        List<Paciente> pacientes = sshssServices.pacienteRepository.findAll();
+    final PacienteService pacienteService;
+
+    public PacienteController(PacienteService pacienteService) {
+        this.pacienteService = pacienteService;
+    }
+
+    @GetMapping("/paciente")
+    public ResponseEntity<List<Paciente>> listarPacientes() {
+        List<Paciente> pacientes = pacienteService.findAll();
         return ResponseEntity.ok(pacientes);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Paciente> buscarPaciente(@PathVariable Long id) {
-        Optional<Paciente> paciente = sshssServices.pacienteRepository.findById(id);
-        return paciente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-
-    @PostMapping
-    public ResponseEntity<Paciente> salvarPaciente(@RequestBody Paciente paciente) {
-        Paciente pacienteSalvo = sshssServices.pacienteRepository.save(paciente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(pacienteSalvo);
-
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Paciente> atualizarPaciente(@PathVariable Long id, @RequestBody Paciente pacienteAtualizado) {
-        Optional<Paciente> pacienteExistente = sshssServices.buscaPaciente(id);
-        if(pacienteExistente.isPresent()) {
-            pacienteAtualizado.setId(id);
-            Paciente pacienteSalvo = sshssServices.pacienteRepository.save(pacienteAtualizado);
-            return ResponseEntity.ok(pacienteSalvo);
-        }else{
-        return ResponseEntity.notFound().build();
+    @GetMapping("/paciente/{id}")
+    public ResponseEntity<Object> buscarPaciente(@PathVariable(value="id") Long id) {
+        Optional<Paciente> pacienteOptional = pacienteService.findById(id);
+        if (pacienteOptional.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Paciente não existe");
         }
+        return ResponseEntity.status(HttpStatus.OK).body(pacienteOptional.get());
     }
 
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Paciente> deletarPaciente(@PathVariable Long id) {
-        if (sshssServices.pacienteRepository.existsById(id)) {
-            sshssServices.pacienteRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }else{
-            return ResponseEntity.notFound().build();
+
+
+    @PostMapping("/paciente")
+    public ResponseEntity<Paciente> salvarPaciente(@RequestBody @Valid PacienteRecord pacienteRecord) {
+        var paciente = new Paciente();
+        BeanUtils.copyProperties(pacienteRecord, paciente);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pacienteService.save(paciente));
+
+    }
+
+    @PutMapping("/paciente/{id}")
+    public ResponseEntity<Object> atualizarPaciente(@PathVariable(value="id") Long id,
+                                                    @RequestBody @Valid PacienteRecord pacienteRecord){
+           Optional<Paciente> pacienteOptional = pacienteService.findById(id);
+            if(pacienteOptional.isEmpty()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Paciente não encontrado. ");
+            }
+            var paciente = pacienteOptional.get();
+            BeanUtils.copyProperties(pacienteRecord, paciente);
+            return ResponseEntity.status(HttpStatus.OK).body(pacienteService.save(paciente));
+    }
+
+
+    @DeleteMapping("/paciente/{id}")
+    public ResponseEntity<Object> deletarPaciente(@PathVariable(value="id") Long id) {
+        Optional<Paciente> pacienteOptional = pacienteService.findById(id);
+        if(pacienteOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Paciente não encontrado. ");
         }
+        pacienteService.delete(pacienteOptional.get());
+        return ResponseEntity.status(HttpStatus.OK).body("Paciente deletado com sucesso!");
     }
-
 }
+
