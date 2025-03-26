@@ -59,7 +59,7 @@ public class ConsultaController {
     public ResponseEntity<Object> salvarConsulta(@RequestBody @Valid ConsultaRecord consultaRecord) {
         Consulta consulta = new Consulta();
         consulta.setDataHora(consultaRecord.dataHora());
-        consulta.setStatus(consultaRecord.status());
+        consulta.setstatus(consultaRecord.status());
         consulta.setTpConsulta(consultaRecord.tpConsulta());
 
         Optional<Paciente> pacienteOptional = pacienteService.findById(consultaRecord.id_paciente());
@@ -85,48 +85,44 @@ public class ConsultaController {
 
 
 
-    @PutMapping("/consulta/{id}/status")
-    public ResponseEntity<Object> atualizarStatusConsulta(
-            @PathVariable(value = "id") Long id,
-            @RequestBody String novoStatus) {
-
-        System.out.println("Iniciando atualização do status da consulta com ID: " + id);
-        System.out.println("Novo status recebido: " + novoStatus);
-
-        Optional<Consulta> consultaOptional = consultaService.findById(id);
-        if (consultaOptional.isEmpty()) {
-            System.out.println("Consulta não encontrada.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Consulta não encontrada");
-        }
-
-        Consulta consulta = consultaOptional.get();
-        System.out.println("Consulta recuperada do banco de dados: " + consulta);
-
-        consulta.setStatus(novoStatus);
-        System.out.println("Consulta com novo status: " + consulta);
-
-        consultaService.saveConsulta(consulta);
-        System.out.println("Consulta salva no banco de dados.");
-
-        return ResponseEntity.status(HttpStatus.OK).body("Status da consulta atualizado com sucesso");
-    }
-
-
-
-
+//    @PutMapping("/consulta/{id}/status")
+//    public ResponseEntity<Object> atualizarStatusConsulta(
+//            @PathVariable(value = "id") Long id,
+//            @RequestBody String novoStatus) {
 //
+//        System.out.println("Iniciando atualização do status da consulta com ID: " + id);
+//        System.out.println("Novo status recebido: " + novoStatus);
 //
-//
-//    @PutMapping("/consulta/{id}")
-//    public ResponseEntity<Object> atualizarConsulta(@PathVariable(value ="id")Long id, @RequestBody @Valid Consulta consulta){
 //        Optional<Consulta> consultaOptional = consultaService.findById(id);
-//        if (consultaOptional.isEmpty()){
+//        if (consultaOptional.isEmpty()) {
+//            System.out.println("Consulta não encontrada.");
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Consulta não encontrada");
 //        }
-//        var consultas = consultaOptional.get();
-//        BeanUtils.copyProperties(consulta, consulta);
-//        return  ResponseEntity.status(HttpStatus.OK).body(consultaService.saveConsulta(consultas));
+//
+//        Consulta consulta = consultaOptional.get();
+//        System.out.println("Consulta recuperada do banco de dados: " + consulta);
+//
+//        consulta.setStatus(novoStatus);
+//        System.out.println("Consulta com novo status: " + consulta);
+//
+//        consultaService.saveConsulta(consulta);
+//        System.out.println("Consulta salva no banco de dados.");
+//
+//        return ResponseEntity.status(HttpStatus.OK).body("Status da consulta atualizado com sucesso");
 //    }
+
+
+    @PutMapping("/consulta/{id}")
+    public ResponseEntity<Object> atualizarConsulta(@PathVariable(value ="id")Long id, @RequestBody @Valid Consulta consulta){
+        Optional<Consulta> consultaOptional = consultaService.findById(id);
+        if (consultaOptional.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Consulta não encontrada");
+        }
+        var consultas = consultaOptional.get();
+        BeanUtils.copyProperties(consulta, consulta);
+        return  ResponseEntity.status(HttpStatus.OK).body(consultaService.saveConsulta(consultas));
+    }
+
 
     @DeleteMapping("/consulta/{id}")
     public ResponseEntity<Object> removerConsulta(@PathVariable(value ="id")Long id){

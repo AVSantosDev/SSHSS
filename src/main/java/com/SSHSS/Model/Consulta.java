@@ -38,11 +38,11 @@ public class Consulta {
         this.dataHora = dataHora;
     }
 
-    public String getStatus() {
+    public String getstatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setstatus(String status) {
         status = status;
     }
 

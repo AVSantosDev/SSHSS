@@ -7,28 +7,30 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(name="profissional_de_saude")
 public class ProfissionalDeSaude {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-    private String nome;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="idProfissional")
+    private Long id;
+    private String name;
     private String especialidade;
     private String crmCoren;
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEspecialidade() {

@@ -2,7 +2,12 @@ package com.SSHSS.Controller;
 
 import com.SSHSS.Model.Paciente;
 import com.SSHSS.Model.ProfissionalDeSaude;
+import com.SSHSS.Service.ProfissionalDeSaudeService;
 import com.SSHSS.Service.SshssServices;
+import com.SSHSS.dtos.PacienteRecord;
+import com.SSHSS.dtos.ProfissionalDeSaudeRecord;
+import jakarta.validation.Valid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,50 +17,65 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
-@RequestMapping("/profissional")
+@RestController
+@RequestMapping("/SSHSS")
 public class ProfissionalDeSaudeController {
 
-//    @Autowired
-//    private SshssServices sshssServices;
-//
-//    @GetMapping
-//    public ResponseEntity<List<ProfissionalDeSaude>> listarProfissionais() {
-//        List<ProfissionalDeSaude> profissionais = sshssServices.listarProfissionais();
-//        return ResponseEntity.ok(profissionais);
-//    }
-//
-//    @PostMapping
-//    public ResponseEntity<ProfissionalDeSaude> SalvarPaciente(@RequestBody ProfissionalDeSaude profissionalDeSaude) {
-//        ProfissionalDeSaude profissionalDeSaudeSalvo = sshssServices.salvarProfissional(profissionalDeSaude);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(profissionalDeSaudeSalvo);
-//
-//    }
-//
-//    @PutMapping("/{id}")
-//    public ResponseEntity<ProfissionalDeSaude> atualizarProfissional(@PathVariable int id, @RequestBody ProfissionalDeSaude profissionalAtualizado) {
-//        Optional<ProfissionalDeSaude> profissionalDeSaudeExistente = sshssServices.profissionalDeSaudeRepository.findById(id);
-//        if(profissionalDeSaudeExistente.isPresent()) {
-//            profissionalAtualizado.setId(id);
-//            ProfissionalDeSaude profissionalSalvo = sshssServices.salvarProfissional(profissionalAtualizado);
-//            return ResponseEntity.ok(profissionalSalvo);
-//        }else{
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-//
-//
-//
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<ProfissionalDeSaude> deletarProfissional(@PathVariable int id) {
-//        if (sshssServices.profissionalDeSaudeRepository.existsById(id)) {
-//            sshssServices.profissionalDeSaudeRepository.deleteById(id);
-//            return ResponseEntity.noContent().build();
-//        }else{
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
+    final ProfissionalDeSaudeService profissionalDeSaudeService;
+
+    public ProfissionalDeSaudeController(ProfissionalDeSaudeService profissionalDeSaudeService) {this.profissionalDeSaudeService = profissionalDeSaudeService;}
+
+    @GetMapping("/profissional_de_saude")
+    public ResponseEntity<List<ProfissionalDeSaude>> listarProfissionais() {
+        List<ProfissionalDeSaude> profissionais = profissionalDeSaudeService.listarProfissionais();
+        return ResponseEntity.ok(profissionais);
+
+    }
+
+    @GetMapping("/profissional_de_saude/{id}")
+    public ResponseEntity<Object> listarProfissionalId(@PathVariable(value = "id") Long id) {
+       Optional<ProfissionalDeSaude> profissionalDeSaudeOptional = profissionalDeSaudeService.listarProfissionalId(id);
+       if (profissionalDeSaudeOptional.isEmpty()){
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profissional não encontrado");
+       }
+        return ResponseEntity.status(HttpStatus.OK).body(profissionalDeSaudeOptional.get());
+    }
+
+
+    @PostMapping("/profissional_de_saude")
+    public ResponseEntity<Object> salvarPaciente(@RequestBody @Valid ProfissionalDeSaudeRecord profissionalDeSaudeRecord) {
+        var novoProfissional = new ProfissionalDeSaude();
+        BeanUtils.copyProperties(profissionalDeSaudeRecord, novoProfissional);
+        return ResponseEntity.status(HttpStatus.CREATED).body(profissionalDeSaudeService.saveProfissional(novoProfissional));
+
+    }
+
+
+    @PutMapping("/profissional_de_saude/{id}")
+    public ResponseEntity<Object> atualizarProfissional(@PathVariable(value = "id") Long id,@RequestBody @Valid ProfissionalDeSaudeRecord profissionalDeSaudeRecord) {
+
+        Optional<ProfissionalDeSaude> profissionalDeSaudeOptional = profissionalDeSaudeService.listarProfissionalId(id);
+        if (profissionalDeSaudeOptional.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profissional não encontrado");
+        }
+        var profissional = profissionalDeSaudeOptional.get();
+        BeanUtils.copyProperties(profissionalDeSaudeRecord, profissional);
+        return ResponseEntity.status(HttpStatus.OK).body(profissionalDeSaudeService.saveProfissional(profissional));
+    }
+
+
+
+
+    @DeleteMapping("/profissional_de_saude/{id}")
+    public ResponseEntity<Object> deletarProfissional(@PathVariable(value = "id")Long id){
+        Optional<ProfissionalDeSaude> profissionalDeSaudeOptional = profissionalDeSaudeService.listarProfissionalId(id);
+        if (profissionalDeSaudeOptional.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profissional não encontrado");
+        }
+        profissionalDeSaudeService.delete(profissionalDeSaudeOptional.get());
+        return ResponseEntity.status(HttpStatus.OK).body("Profissional deletado com sucesso");
+
+    }
 
 }
 

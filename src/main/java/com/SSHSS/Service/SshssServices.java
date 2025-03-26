@@ -23,9 +23,9 @@ public class SshssServices {
 
     @Autowired
     public PrescricaoRepository prescricaoRepository;
-
-    @Autowired
-    public ProfissionalDeSaudeRepository profissionalDeSaudeRepository;
+//
+//    @Autowired
+//    public ProfissionalDeSaudeRepository profissionalDeSaudeRepository;
 
 
 
@@ -60,16 +60,16 @@ public class SshssServices {
     public List<Prescricao> listarPrescricoes() {
         return prescricaoRepository.findAll();
     }
-
-    public ProfissionalDeSaude salvarProfissional(ProfissionalDeSaude profissionalDeSaude) {
-        return profissionalDeSaudeRepository.save(profissionalDeSaude);
-
-    }
-
-    public List<ProfissionalDeSaude> listarProfissionais() {
-        return profissionalDeSaudeRepository.findAll();
-    }
-
+//
+//    public ProfissionalDeSaude salvarProfissional(ProfissionalDeSaude profissionalDeSaude) {
+//        return profissionalDeSaudeRepository.save(profissionalDeSaude);
+//
+//    }
+//
+//    public List<ProfissionalDeSaude> listarProfissionais() {
+//        return profissionalDeSaudeRepository.findAll();
+//    }
+//
 
 
 }
