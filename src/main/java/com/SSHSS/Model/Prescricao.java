@@ -1,27 +1,30 @@
 package com.SSHSS.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
+@Table(name= "prescricao")
 public class Prescricao {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
 
-    private UUID id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idPrescricao")
+    private Long id;
     private String descricao;
-
+    @Temporal(TemporalType.TIMESTAMP)
     private Date data;
 
-    public UUID getId() {
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -58,12 +61,14 @@ public class Prescricao {
     }
 
     @ManyToOne
-    @JoinColumn(name = "profissional_id")
+    @JoinColumn(name = "id_profissional")
+    @JsonIgnore
     private ProfissionalDeSaude profissional;
 
 
     @ManyToOne
-    @JoinColumn(name = "paciente_id")
+    @JsonIgnore
+    @JoinColumn(name = "id_paciente")
     private Paciente paciente;
 
     public void emitir() {

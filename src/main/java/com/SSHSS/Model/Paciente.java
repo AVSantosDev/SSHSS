@@ -2,9 +2,11 @@ package com.SSHSS.Model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,8 +24,24 @@ public class Paciente   {
     private String cpf;
     private String telefone;
     private String email;
+    private Date DtNascimento;
+    private String nomeDaMae;
 
+    public String getNomeDaMae() {
+        return nomeDaMae;
+    }
 
+    public void setNomeDaMae(String nomeDaMae) {
+        this.nomeDaMae = nomeDaMae;
+    }
+
+    public Date getDtNascimento() {
+        return DtNascimento;
+    }
+
+    public void setDtNascimento(Date dtNascimento) {
+        DtNascimento = dtNascimento;
+    }
 
     @OneToOne(mappedBy = "paciente",cascade = CascadeType.ALL)
     private Prontuario prontuario;

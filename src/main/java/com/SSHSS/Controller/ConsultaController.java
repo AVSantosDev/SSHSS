@@ -3,8 +3,10 @@ package com.SSHSS.Controller;
 
 import com.SSHSS.Model.Consulta;
 import com.SSHSS.Model.Paciente;
+import com.SSHSS.Model.ProfissionalDeSaude;
 import com.SSHSS.Service.ConsultaService;
 import com.SSHSS.Service.PacienteService;
+import com.SSHSS.Service.ProfissionalDeSaudeService;
 import com.SSHSS.dtos.ConsultaRecord;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
@@ -23,8 +25,15 @@ public class ConsultaController {
 
     final ConsultaService consultaService;
     final PacienteService pacienteService;
+    final ProfissionalDeSaudeService profissionalDeSaudeService;
 
-    public ConsultaController(ConsultaService consultaService, PacienteService pacienteService) {this.consultaService = consultaService;this.pacienteService = pacienteService;}
+    public ConsultaController(ConsultaService consultaService,
+                              PacienteService pacienteService,
+                              ProfissionalDeSaudeService profissionalDeSaudeService) {
+        this.consultaService = consultaService;
+        this.pacienteService = pacienteService;
+        this.profissionalDeSaudeService = profissionalDeSaudeService;}
+
 
 
     @GetMapping("/consulta")
@@ -56,7 +65,7 @@ public class ConsultaController {
 
 
     @PostMapping("/consulta")
-    public ResponseEntity<Object> salvarConsulta(@RequestBody @Valid ConsultaRecord consultaRecord) {
+    public ResponseEntity<Consulta> salvarConsulta(@RequestBody @Valid ConsultaRecord consultaRecord) {
         Consulta consulta = new Consulta();
         consulta.setDataHora(consultaRecord.dataHora());
         consulta.setstatus(consultaRecord.status());
@@ -64,11 +73,20 @@ public class ConsultaController {
 
         Optional<Paciente> pacienteOptional = pacienteService.findById(consultaRecord.id_paciente());
         if (pacienteOptional.isEmpty()) {
-            return ResponseEntity.badRequest().body("Paciente não encontrado");
+            return ResponseEntity.badRequest().body(consultaService.saveConsulta(consulta));
         }
         consulta.setPaciente(pacienteOptional.get());
 
-//        if(consultaRecord.profissional_id() != null) {
+
+        Optional<ProfissionalDeSaude> profissionalDeSaudeOptional = profissionalDeSaudeService.listarProfissionalId(consultaRecord.id_profissional());
+        if (profissionalDeSaudeOptional.isEmpty()){
+            return ResponseEntity.badRequest().body(consultaService.saveConsulta(consulta));
+        }
+        consulta.setProfissional(profissionalDeSaudeOptional.get());
+
+
+
+//        if (consultaRecord.profissional_id() != null) {
 //            Optional<ProfissionalDeSaude> profissionalOptional = profissionalService.findById(consultaRecord.profissional_id());
 //            if (profissionalOptional.isEmpty()) {
 //                return ResponseEntity.badRequest().body("Profissional não encontrado");

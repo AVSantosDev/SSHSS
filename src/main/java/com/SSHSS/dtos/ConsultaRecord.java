@@ -9,5 +9,6 @@ import java.util.Date;
 public record ConsultaRecord(@NotNull Date dataHora,
                              @NotBlank String status,
                              @NotNull boolean tpConsulta,
-                             @NotNull Long id_paciente) {
+                             @NotNull Long id_paciente,
+                             @NotNull Long id_profissional) {
 }

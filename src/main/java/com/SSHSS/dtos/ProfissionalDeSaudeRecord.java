@@ -4,7 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 
 public record ProfissionalDeSaudeRecord(@NotBlank String name,
                                         @NotBlank String especialidade,
-                                        @NotBlank String crmCoren) {
+                                        @NotBlank String crmCoren,
+                                        @NotBlank String cargoProf) {
 }
 
 

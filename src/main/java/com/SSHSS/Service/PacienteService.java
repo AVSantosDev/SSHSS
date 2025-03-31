@@ -21,16 +21,9 @@ public class PacienteService {
     public Paciente save(Paciente paciente){
         return pacienteRepository.save(paciente);
     }
-
     public List<Paciente> findAll() {
         return pacienteRepository.findAll();
     }
-
-    public Optional<Paciente> findById(Long id) {
-        return pacienteRepository.findById(id);
-    }
-
-    public void delete(Paciente paciente) {
-        pacienteRepository.delete(paciente);
-    }
+    public Optional<Paciente> findById(Long id) {return pacienteRepository.findById(id);}
+    public void delete(Paciente paciente) {pacienteRepository.delete(paciente);}
 }

@@ -9,17 +9,17 @@ import java.util.UUID;
 @Entity
 public class Exame {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private UUID id;
+    private Long id;
     private String tipo;
     private String resultado;
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -72,7 +72,7 @@ public class Exame {
 
 
     @ManyToOne
-    @JoinColumn(name = "paciente_id")
+    @JoinColumn(name = "id_paciente")
     private Paciente paciente;
 
     public void solicitar(){

@@ -16,6 +16,15 @@ public class ProfissionalDeSaude {
     private String name;
     private String especialidade;
     private String crmCoren;
+    private String cargoProf;
+
+    public String getCargoProf() {
+        return cargoProf;
+    }
+
+    public void setCargoProf(String cargoProf) {
+        this.cargoProf = cargoProf;
+    }
 
     public Long getId() {
         return id;

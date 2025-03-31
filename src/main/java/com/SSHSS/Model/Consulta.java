@@ -1,6 +1,7 @@
 package com.SSHSS.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
@@ -42,9 +43,7 @@ public class Consulta {
         return status;
     }
 
-    public void setstatus(String status) {
-        status = status;
-    }
+    public void setstatus(String status) {this.status = status;}
 
     public boolean isTpConsulta() {
         return tpConsulta;
@@ -74,12 +73,15 @@ public class Consulta {
 
 
     @ManyToOne
-    @JoinColumn(name = "id_Paciente")
+    @JoinColumn(name = "id_paciente")
     @NotNull
+    @JsonIgnore
     private Paciente paciente;
 
     @ManyToOne
-    @JoinColumn(name = "profissional_id")
+    @JoinColumn(name = "id_profissional")
+    @NotNull
+    @JsonIgnore
     private ProfissionalDeSaude profissional;
 
 

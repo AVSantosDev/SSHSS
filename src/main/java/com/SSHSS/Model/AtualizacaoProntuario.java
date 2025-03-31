@@ -9,9 +9,9 @@ import java.util.UUID;
 public class AtualizacaoProntuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private UUID id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "profissional_id")
