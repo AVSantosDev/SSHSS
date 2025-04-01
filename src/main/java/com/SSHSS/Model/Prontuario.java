@@ -3,9 +3,7 @@ package com.SSHSS.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 public class Prontuario {
@@ -13,103 +11,91 @@ public class Prontuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IdProntuario")
     private Long id;
-    private String historico;
     private Date dataAtualizacao;
 
-
-    public Long getId() {
-        return id;
+    public Set<Consulta> getConsultas() {
+        return consultas;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setConsultas(Set<Consulta> consultas) {
+        this.consultas = consultas;
     }
 
-    public String getHistorico() {
-        return historico;
+    public Set<Prescricao> getPrescricoes() {
+        return prescricoes;
     }
 
-    public void setHistorico(String historico) {
-        this.historico = historico;
+    public void setPrescricoes(Set<Prescricao> prescricoes) {
+        this.prescricoes = prescricoes;
     }
 
-    public Date getDataAtualizacao() {
-        return dataAtualizacao;
+    public Set<ProfissionalDeSaude> getProfissionais() {
+        return profissionais;
     }
+
+    public void setProfissionais(Set<ProfissionalDeSaude> profissionais) {
+        this.profissionais = profissionais;
+    }
+
+    public Set<Paciente> getPacientes() {
+        return pacientes;
+    }
+
+    public void setPacientes(Set<Paciente> pacientes) {
+        this.pacientes = pacientes;
+    }
+
+//    public Date getDataAtualizacao() {
+//        return dataAtualizacao;
+//    }
 
     public void setDataAtualizacao(Date dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
     }
 
-    public Paciente getPaciente() {
-        return paciente;
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
-
-    public ProfissionalDeSaude getProfissionalDeSaude() {
-        return profissionalDeSaude;
-    }
-
-    public void setProfissionalDeSaude(ProfissionalDeSaude profissionalDeSaude) {
-        this.profissionalDeSaude = profissionalDeSaude;
-    }
-
-    public Prescricao getPrescricao() {
-        return prescricao;
-    }
-
-    public void setPrescricao(Prescricao prescricao) {
-        this.prescricao = prescricao;
-    }
-
-    public Consulta getConsulta() {
-        return consulta;
-    }
-
-    public void setConsulta(Consulta consulta) {
-        this.consulta = consulta;
-    }
-
-    public List<AtualizacaoProntuario> getAtualizacoes() {
-        return Atualizacoes;
-    }
-
-    public void setAtualizacoes(List<AtualizacaoProntuario> atualizacoes) {
-        Atualizacoes = atualizacoes;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "id_paciente")
+    @ManyToMany
+    @JoinTable(
+            name = "prontuario_paciente",
+            joinColumns = @JoinColumn(name = "prontuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "paciente_id")
+    )
     @JsonIgnore
-    private Paciente paciente;
+    private Set<Paciente> pacientes = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "id_profissional")
+    @ManyToMany
+    @JoinTable(
+            name = "prontuario_profissional",
+            joinColumns = @JoinColumn(name = "prontuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "profissional_id")
+    )
     @JsonIgnore
-    private ProfissionalDeSaude profissionalDeSaude;
+    private Set<ProfissionalDeSaude> profissionais = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "id_prescicao")
+    @ManyToMany
+    @JoinTable(
+            name = "prontuario_prescricao",
+            joinColumns = @JoinColumn(name = "prontuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "prescricao_id")
+    )
     @JsonIgnore
-    private Prescricao prescricao;
+    private Set<Prescricao> prescricoes = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "id_consulta")
+    @ManyToMany
+    @JoinTable(
+            name = "prontuario_consulta",
+            joinColumns = @JoinColumn(name = "prontuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "consulta_id")
+    )
     @JsonIgnore
-    private Consulta consulta;
+    private Set<Consulta> consultas = new HashSet<>();
 
-    @OneToMany(mappedBy = "prontuario")
-    @JsonIgnore
-    private List<AtualizacaoProntuario> Atualizacoes;
-
-
-
-    public void atualizar() {
-
-
-    }
 
 }

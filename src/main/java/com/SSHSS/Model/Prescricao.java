@@ -71,8 +71,18 @@ public class Prescricao {
     @JoinColumn(name = "id_paciente")
     private Paciente paciente;
 
+
+    @ManyToOne
+    @JoinColumn(name = "id_prontuario")
+    @JsonIgnore
+    private Prontuario prontuario;
+
     public void emitir() {
 
 
     }
+
+    public void setProntuario(Prontuario novoProntuario) {
+    }
+
 }

@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name= "paciente")
@@ -43,8 +41,18 @@ public class Paciente   {
         DtNascimento = dtNascimento;
     }
 
-    @OneToOne(mappedBy = "paciente",cascade = CascadeType.ALL)
-    private Prontuario prontuario;
+//    @ManyToMany
+//    @JsonIgnore
+//    private Prontuario prontuario;
+
+    @ManyToMany
+    @JoinTable(
+            name = "paciente_prontuario",
+            joinColumns = @JoinColumn(name = "id_paciente"),
+            inverseJoinColumns = @JoinColumn(name = "id_prontuario")
+    )
+    @JsonIgnore
+    private Set<Prontuario> prontuario = new HashSet<>();
 
     @OneToMany(mappedBy = "paciente")
     @JsonIgnore
@@ -58,6 +66,15 @@ public class Paciente   {
 
     public Long getId() {
         return id;
+    }
+
+    // Mantendo os getters/setters originais
+    public Set<Prontuario> getProntuario() {
+        return prontuario;
+    }
+
+    public void setProntuario(Set<Prontuario> prontuario) {
+        this.prontuario = prontuario;
     }
 
     public void setId(Long id) {
@@ -95,14 +112,14 @@ public class Paciente   {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public Prontuario getProntuario() {
-        return prontuario;
-    }
-
-    public void setProntuario(Prontuario prontuario) {
-        this.prontuario = prontuario;
-    }
+//
+//    public Prontuario getProntuario() {
+//        return prontuario;
+//    }
+//
+//    public void setProntuario(Prontuario prontuario) {
+//        this.prontuario = prontuario;
+//    }
 
     public List<Consulta> getConsultas() {
         return consultas;

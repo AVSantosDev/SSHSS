@@ -40,22 +40,24 @@ public class ProntuarioController {
         this.consultaService = consultaService;
     }
 
-    @GetMapping("/Prontuario")
-    public ResponseEntity<List<ListarProntuario>> listarProntuario() {
-        List<Prontuario> listaProntuario = prontuarioService.listarProntuario();
-        List<ListarProntuario> listaDTO = listaProntuario.stream()
-                .map(prontuario -> new ListarProntuario(
-                        prontuario.getId(),
-                        prontuario.getHistorico(),
-                        prontuario.getDataAtualizacao(),
-                        prontuario.getPaciente() != null ? prontuario.getPaciente().getId() : null,
-                        prontuario.getProfissionalDeSaude() != null ? prontuario.getProfissionalDeSaude().getId() : null,
-                        prontuario.getConsulta() != null ? prontuario.getConsulta().getId() : null,
-                        prontuario.getPrescricao()!= null ? prontuario.getPrescricao().getId() : null
-                ))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(listaDTO);
-    }
+//    @GetMapping("/Prontuario")
+//    public ResponseEntity<List<ListarProntuario>> listarProntuario() {
+//        List<Prontuario> listaProntuario = prontuarioService.listarProntuario();
+//        List<ListarProntuario> listaDTO = listaProntuario.stream()
+//                .map(prontuario -> new ListarProntuario(
+//                        prontuario.getId(),
+//                        prontuario.getHistorico(),
+//                        prontuario.getDataAtualizacao(),
+////                        prontuario.getPaciente() != null ? prontuario.getPaciente().getId() : null,
+//                        prontuario.getPaciente().stream().findFirst().map(Paciente::getId).orElse(null),
+//                        prontuario.getProfissionalDeSaude() != null ? prontuario.getProfissionalDeSaude().getId() : null,
+//                        prontuario.getConsulta() != null ? prontuario.getConsulta().getId() : null,
+//                        prontuario.getPrescricao()!= null ? prontuario.getPrescricao().getId() : null
+////
+//                ))
+//                .collect(Collectors.toList());
+//        return ResponseEntity.ok(listaDTO);
+//    }
 
 
 
@@ -63,41 +65,73 @@ public class ProntuarioController {
  //   @GetMapping("/Prontuario/{id}")
 
 
+//    @PostMapping("/Prontuario")
+//    public ResponseEntity<Prontuario> inserirProntuario(@RequestBody @Valid ProntuarioRedord prontuarioRedord){
+//        Prontuario prontuario = new Prontuario();
+//        prontuario.setHistorico(prontuarioRedord.historico());
+//        prontuario.setDataAtualizacao(prontuarioRedord.dataAtualizacao());
+//
+//        Optional<Paciente> pacienteOptional = pacienteService.findById(prontuarioRedord.id_paciente());
+//        if (pacienteOptional.isEmpty()) {
+//            return ResponseEntity.badRequest().body(prontuarioService.saveProntuario(prontuario));
+//        }
+//        prontuario.setPaciente(pacienteOptional.get());
+//
+//        Optional<ProfissionalDeSaude> profissionalDeSaudeOptional = profissionalDeSaudeService.listarProfissionalId(prontuarioRedord.id_profissional());
+//        if (profissionalDeSaudeOptional .isEmpty()) {
+//            return ResponseEntity.badRequest().body(prontuarioService.saveProntuario(prontuario));
+//        }
+//        prontuario.setProfissionalDeSaude(profissionalDeSaudeOptional.get());
+//
+//
+//        Optional<Prescricao> prescricaoOptional = prescricaoService.buscarPrescricao(prontuarioRedord.id_prescricao());
+//        if (prescricaoOptional.isEmpty()) {
+//            return ResponseEntity.badRequest().body(prontuarioService.saveProntuario(prontuario));
+//        }
+//        prontuario.setPrescricao(prescricaoOptional.get());
+//
+//
+//        Optional<Consulta> consultaOptional = consultaService.findById(prontuarioRedord.id_consulta());
+//        if (consultaOptional.isEmpty()) {
+//            return ResponseEntity.badRequest().body(prontuarioService.saveProntuario(prontuario));
+//        }
+//        prontuario.setConsulta(consultaOptional.get());
+//
+//        Prontuario novoProntuario = prontuarioService.saveProntuario(prontuario);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(novoProntuario);
+//    }
+
+
+
     @PostMapping("/Prontuario")
-    public ResponseEntity<Prontuario> inserirProntuario(@RequestBody @Valid ProntuarioRedord prontuarioRedord){
+    public ResponseEntity<Prontuario> inserirProntuario(@RequestBody @Valid ProntuarioRedord  prontuarioRedord) {
         Prontuario prontuario = new Prontuario();
-        prontuario.setHistorico(prontuarioRedord.historico());
         prontuario.setDataAtualizacao(prontuarioRedord.dataAtualizacao());
 
-        Optional<Paciente> pacienteOptional = pacienteService.findById(prontuarioRedord.id_paciente());
-        if (pacienteOptional.isEmpty()) {
-            return ResponseEntity.badRequest().body(prontuarioService.saveProntuario(prontuario));
-        }
-        prontuario.setPaciente(pacienteOptional.get());
+        Optional.ofNullable(prontuarioRedord.id_paciente())
+                .flatMap(pacienteService::findById)
+                .ifPresent(p -> prontuario.getPacientes().add(p));
 
-        Optional<ProfissionalDeSaude> profissionalDeSaudeOptional = profissionalDeSaudeService.listarProfissionalId(prontuarioRedord.id_profissional());
-        if (profissionalDeSaudeOptional .isEmpty()) {
-            return ResponseEntity.badRequest().body(prontuarioService.saveProntuario(prontuario));
-        }
-        prontuario.setProfissionalDeSaude(profissionalDeSaudeOptional.get());
+        Optional.ofNullable(prontuarioRedord.id_profissional())
+                .flatMap(profissionalDeSaudeService::listarProfissionalId)
+                .ifPresent(prof ->prontuario.getProfissionais().add(prof));
 
+        Optional.ofNullable(prontuarioRedord.id_consulta())
+                .flatMap(prescricaoService::buscarPrescricao)
+                .ifPresent(presc -> prontuario.getPrescricoes().add(presc));
 
-        Optional<Prescricao> prescricaoOptional = prescricaoService.buscarPrescricao(prontuarioRedord.id_prescricao());
-        if (prescricaoOptional.isEmpty()) {
-            return ResponseEntity.badRequest().body(prontuarioService.saveProntuario(prontuario));
-        }
-        prontuario.setPrescricao(prescricaoOptional.get());
-
-
-        Optional<Consulta> consultaOptional = consultaService.findById(prontuarioRedord.id_consulta());
-        if (consultaOptional.isEmpty()) {
-            return ResponseEntity.badRequest().body(prontuarioService.saveProntuario(prontuario));
-        }
-        prontuario.setConsulta(consultaOptional.get());
+        Optional.ofNullable(prontuarioRedord.id_consulta())
+                .flatMap(consultaService::findById)
+                .ifPresent(consulta -> prontuario.getConsultas().add(consulta));
 
         Prontuario novoProntuario = prontuarioService.saveProntuario(prontuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoProntuario);
+
+
     }
+
+
+
 
 
     @PutMapping("/Prontuario/{id}")
