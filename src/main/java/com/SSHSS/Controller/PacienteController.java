@@ -32,15 +32,13 @@ public class PacienteController {
     }
 
     @GetMapping("/paciente/{id}")
-    public ResponseEntity<Object> buscarPaciente(@PathVariable(value="id") Long id) {
+    public ResponseEntity<Object> buscarPaciente(@PathVariable(value = "id") Long id) {
         Optional<Paciente> pacienteOptional = pacienteService.findById(id);
-        if (pacienteOptional.isEmpty()){
+        if (pacienteOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Paciente não existe");
         }
         return ResponseEntity.status(HttpStatus.OK).body(pacienteOptional.get());
     }
-
-
 
 
     @PostMapping("/paciente")
@@ -52,26 +50,25 @@ public class PacienteController {
     }
 
     @PutMapping("/paciente/{id}")
-    public ResponseEntity<Object> atualizarPaciente(@PathVariable(value="id") Long id,
-                                                    @RequestBody @Valid PacienteRecord pacienteRecord){
-           Optional<Paciente> pacienteOptional = pacienteService.findById(id);
-            if(pacienteOptional.isEmpty()){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Paciente não encontrado. ");
-            }
-            var paciente = pacienteOptional.get();
-            BeanUtils.copyProperties(pacienteRecord, paciente);
-            return ResponseEntity.status(HttpStatus.OK).body(pacienteService.save(paciente));
+    public ResponseEntity<Object> atualizarPaciente(@PathVariable(value = "id") Long id,
+                                                    @RequestBody @Valid PacienteRecord pacienteRecord) {
+        Optional<Paciente> pacienteOptional = pacienteService.findById(id);
+        if (pacienteOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Paciente não encontrado. ");
+        }
+        var paciente = pacienteOptional.get();
+        BeanUtils.copyProperties(pacienteRecord, paciente);
+        return ResponseEntity.status(HttpStatus.OK).body(pacienteService.save(paciente));
     }
 
 
     @DeleteMapping("/paciente/{id}")
-    public ResponseEntity<Object> deletarPaciente(@PathVariable(value="id") Long id) {
+    public ResponseEntity<Object> deletarPaciente(@PathVariable(value = "id") Long id) {
         Optional<Paciente> pacienteOptional = pacienteService.findById(id);
-        if(pacienteOptional.isEmpty()) {
+        if (pacienteOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Paciente não encontrado. ");
         }
         pacienteService.delete(pacienteOptional.get());
         return ResponseEntity.status(HttpStatus.OK).body("Paciente deletado com sucesso!");
     }
 }
-

@@ -3,7 +3,6 @@ package com.SSHSS.Model;
 import jakarta.persistence.*;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Entity
 public class AtualizacaoProntuario {

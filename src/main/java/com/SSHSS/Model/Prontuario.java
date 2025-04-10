@@ -41,9 +41,13 @@ public class Prontuario {
         return pacientes;
     }
 
+
+
     public void setPacientes(Set<Paciente> pacientes) {
         this.pacientes = pacientes;
     }
+
+
 
 //    public Date getDataAtualizacao() {
 //        return dataAtualizacao;

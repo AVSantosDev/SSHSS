@@ -4,7 +4,6 @@ package com.SSHSS.Model;
 import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name="profissional_de_saude")
@@ -81,6 +80,8 @@ public class ProfissionalDeSaude {
     public void setExames(List<Exame> exames) {
         this.exames = exames;
     }
+
+
 
     @OneToMany(mappedBy = "profissional")
     private List<Consulta> consultas;

@@ -2,9 +2,7 @@ package com.SSHSS.Model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.*;
 
@@ -112,14 +110,6 @@ public class Paciente   {
     public void setEmail(String email) {
         this.email = email;
     }
-//
-//    public Prontuario getProntuario() {
-//        return prontuario;
-//    }
-//
-//    public void setProntuario(Prontuario prontuario) {
-//        this.prontuario = prontuario;
-//    }
 
     public List<Consulta> getConsultas() {
         return consultas;

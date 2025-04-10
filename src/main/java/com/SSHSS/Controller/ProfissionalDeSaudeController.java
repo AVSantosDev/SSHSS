@@ -1,17 +1,12 @@
 package com.SSHSS.Controller;
 
-import com.SSHSS.Model.Paciente;
 import com.SSHSS.Model.ProfissionalDeSaude;
 import com.SSHSS.Service.ProfissionalDeSaudeService;
-import com.SSHSS.Service.SshssServices;
-import com.SSHSS.dtos.PacienteRecord;
 import com.SSHSS.dtos.ProfissionalDeSaudeRecord;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

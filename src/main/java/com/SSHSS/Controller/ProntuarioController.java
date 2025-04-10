@@ -1,21 +1,16 @@
 package com.SSHSS.Controller;
 
 
-import com.SSHSS.Model.*;
+import com.SSHSS.Model.Prontuario;
 import com.SSHSS.Service.*;
-import com.SSHSS.dtos.ListarProntuario;
 import com.SSHSS.dtos.ProntuarioRedord;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/SSHSS")
@@ -131,6 +126,16 @@ public class ProntuarioController {
     }
 
 
+
+
+
+//@PostMapping("/Prontuario")
+//public ResponseEntity<Prontuario> CriarProntuario(@RequestBody ProntuarioRedord prontuarioRedord) {
+//    Prontuario prontruario1 = prontuarioService.salvarProntuarioCompleto(prontuarioRedord);
+//    return ResponseEntity.status(HttpStatus.CREATED).body(prontruario1);
+//}
+//
+// alternativa testada para salvar dentro da tabela prontuario todos os dados
 
 
 

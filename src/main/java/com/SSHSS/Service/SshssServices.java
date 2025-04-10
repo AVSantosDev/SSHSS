@@ -1,13 +1,15 @@
 package com.SSHSS.Service;
 
-import com.SSHSS.Model.*;
-import com.SSHSS.Repository.*;
+import com.SSHSS.Model.Consulta;
+import com.SSHSS.Model.Exame;
+import com.SSHSS.Model.Prescricao;
+import com.SSHSS.Repository.ConsultaRepository;
+import com.SSHSS.Repository.ExameRepository;
+import com.SSHSS.Repository.PrescricaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
 
 @Service
 public class SshssServices {

@@ -25,5 +25,6 @@ public class PacienteService {
         return pacienteRepository.findAll();
     }
     public Optional<Paciente> findById(Long id) {return pacienteRepository.findById(id);}
+    public List<Paciente> findByName(String name) {return pacienteRepository.findByName(name);}
     public void delete(Paciente paciente) {pacienteRepository.delete(paciente);}
 }

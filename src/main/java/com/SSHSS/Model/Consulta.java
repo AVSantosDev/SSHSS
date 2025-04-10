@@ -4,10 +4,8 @@ package com.SSHSS.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Entity
 @Table(name="consulta")
@@ -77,6 +75,7 @@ public class Consulta {
     @NotNull
     @JsonIgnore
     private Paciente paciente;
+
 
     @ManyToOne
     @JoinColumn(name = "id_profissional")

@@ -86,6 +86,8 @@ public class ConsultaController {
 
 
 
+
+
 //        if (consultaRecord.profissional_id() != null) {
 //            Optional<ProfissionalDeSaude> profissionalOptional = profissionalService.findById(consultaRecord.profissional_id());
 //            if (profissionalOptional.isEmpty()) {
