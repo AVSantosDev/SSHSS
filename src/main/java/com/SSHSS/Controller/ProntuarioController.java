@@ -3,6 +3,7 @@ package com.SSHSS.Controller;
 
 import com.SSHSS.Model.Prontuario;
 import com.SSHSS.Service.*;
+import com.SSHSS.dtos.ListarProntuario;
 import com.SSHSS.dtos.ProntuarioRedord;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -36,25 +39,17 @@ public class ProntuarioController {
     }
 
 //    @GetMapping("/Prontuario")
-//    public ResponseEntity<List<ListarProntuario>> listarProntuario() {
-//        List<Prontuario> listaProntuario = prontuarioService.listarProntuario();
-//        List<ListarProntuario> listaDTO = listaProntuario.stream()
-//                .map(prontuario -> new ListarProntuario(
-//                        prontuario.getId(),
-//                        prontuario.getHistorico(),
-//                        prontuario.getDataAtualizacao(),
-////                        prontuario.getPaciente() != null ? prontuario.getPaciente().getId() : null,
-//                        prontuario.getPaciente().stream().findFirst().map(Paciente::getId).orElse(null),
-//                        prontuario.getProfissionalDeSaude() != null ? prontuario.getProfissionalDeSaude().getId() : null,
-//                        prontuario.getConsulta() != null ? prontuario.getConsulta().getId() : null,
-//                        prontuario.getPrescricao()!= null ? prontuario.getPrescricao().getId() : null
-////
-//                ))
-//                .collect(Collectors.toList());
-//        return ResponseEntity.ok(listaDTO);
+//   public ResponseEntity<List<Prontuario>> listarProntuario(){
+//        List<Prontuario> prontuario = prontuarioService.listarProntuario();
+//        return ResponseEntity.ok(prontuario);
 //    }
 
 
+    @GetMapping("/Prontuario")
+    public ResponseEntity<List<Map<String, Object>>> listarProntuarios() {
+        List<Map<String, Object>> prontuariosComDados = prontuarioService.listarProntuario();
+        return ResponseEntity.ok(prontuariosComDados);
+    }
 
 
  //   @GetMapping("/Prontuario/{id}")

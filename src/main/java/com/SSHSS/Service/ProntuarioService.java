@@ -11,10 +11,7 @@ import com.SSHSS.dtos.ProntuarioRedord;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ProntuarioService {
@@ -33,7 +30,11 @@ public class ProntuarioService {
     @Transactional
 
     public Prontuario saveProntuario(Prontuario prontuario) {return prontuarioRepository.save(prontuario);}
-    public List<Prontuario> listarProntuario() {return prontuarioRepository.findAll();}
+//    public List<Prontuario> listarProntuario() {return prontuarioRepository.findAll();}
+//    public List<Prontuario> listarProntuario() {return prontuarioRepository.findAllWithAllData();}
+
+    public List<Map<String, Object>> listarProntuario() {return prontuarioRepository.findAllWithAllData();}
+
     public Optional<Prontuario> bucarProntuario(Long id) {return prontuarioRepository.findById(id);}
     public void deletarprontuario(Prontuario prontuario) {prontuarioRepository.delete(prontuario);}
 
